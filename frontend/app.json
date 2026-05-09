@@ -1,0 +1,36 @@
+{
+    "expo": {
+        "name": "Dev-Hub Task Manager",
+        "slug": "dev-hub-task-manager",
+        "version": "1.0.0",
+        "sdkVersion": "54.0.0",
+        "platforms": [
+            "ios",
+            "android"
+        ],
+        "orientation": "portrait",
+        "primaryColor": "#007AFF",
+        "icon": "./assets/icon.jpg",
+        "splash": {
+            "image": "./assets/splash.jpg",
+            "resizeMode": "contain",
+            "backgroundColor": "#ffffff"
+        },
+        "assetBundlePatterns": [
+            "**/*"
+        ],
+        "ios": {
+            "supportsTablet": true,
+            "bundleIdentifier": "com.devhub.taskmanager"
+        },
+        "android": {
+            "package": "com.devhub.taskmanager",
+            "versionCode": 1,
+            "permissions": [],
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.jpg",
+                "backgroundColor": "#ffffff"
+            }
+        }
+    }
+}
