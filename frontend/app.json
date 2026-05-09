@@ -10,7 +10,7 @@
         ],
         "orientation": "portrait",
         "primaryColor": "#007AFF",
-        "icon": "./assets/icon.jpg",
+        "icon": "./assets/icon.webp",
         "splash": {
             "image": "./assets/splash.jpg",
             "resizeMode": "contain",

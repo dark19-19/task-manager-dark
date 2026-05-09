@@ -47,14 +47,14 @@ const TaskForm = ({ visible, task, onSubmit, onClose }) => {
             <View style={styles.overlay}>
                 <View style={styles.container}>
                     <Text style={styles.title}>{task ? 'Edit Task' : 'New Task'}</Text>
-
+                    <Text style={styles.label}>Title:</Text>
                     <TextInput
                         style={styles.input}
                         placeholder="Task title"
                         value={title}
                         onChangeText={setTitle}
                     />
-
+                    <Text style={styles.label}>Description:</Text>
                     <TextInput
                         style={[styles.input, styles.textArea]}
                         placeholder="Task description"
@@ -67,7 +67,7 @@ const TaskForm = ({ visible, task, onSubmit, onClose }) => {
                     <View style={styles.pickerContainer}>
                         <Text style={styles.label}>Status:</Text>
                         <Picker
-                            selectedValue={status}
+                            selectedValue={status ? status : 'pending'}
                             onValueChange={setStatus}
                             style={styles.picker}
                         >
@@ -80,7 +80,7 @@ const TaskForm = ({ visible, task, onSubmit, onClose }) => {
                     <View style={styles.pickerContainer}>
                         <Text style={styles.label}>Priority:</Text>
                         <Picker
-                            selectedValue={priority}
+                            selectedValue={priority ? priority : 'medium'}
                             onValueChange={setPriority}
                             style={styles.picker}
                         >
