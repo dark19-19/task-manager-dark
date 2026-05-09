@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { fetchTasks, deleteTask, updateTask, createTask } from '../api/apiClient';
+import { fetchTasks, deleteTask, updateTask, createTask } from '../storage/taskStorage';
 import TaskItem from '../components/TaskItem';
 import TaskForm from '../components/TaskForm';
 import TaskDetails from '../components/TaskDetails';
