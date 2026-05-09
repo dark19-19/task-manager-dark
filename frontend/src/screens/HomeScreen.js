@@ -6,12 +6,14 @@ import {
     Pressable,
     StyleSheet,
     Text,
+    useColorScheme,
     View,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchTasks, deleteTask, updateTask, createTask } from '../storage/taskStorage';
 import { fetchNotes, deleteNote, updateNote, createNote } from '../storage/noteStorage';
+import { getThemePreference, saveThemePreference } from '../storage/themeStorage';
 import TaskItem from '../components/TaskItem';
 import TaskForm from '../components/TaskForm';
 import TaskDetails from '../components/TaskDetails';
@@ -22,8 +24,10 @@ import NoteDetails from '../components/NoteDetails';
 
 function HomeScreenContent() {
     const insets = useSafeAreaInsets();
+    const colorScheme = useColorScheme();
     const [activePage, setActivePage] = useState('tasks');
-    const [theme, setTheme] = useState('light');
+    const [theme, setTheme] = useState(colorScheme || 'light');
+    const [storedTheme, setStoredTheme] = useState(null);
     const [loading, setLoading] = useState(true);
     const [tasks, setTasks] = useState([]);
     const [error, setError] = useState(null);
@@ -67,9 +71,26 @@ function HomeScreenContent() {
     };
 
     useEffect(() => {
+        const loadTheme = async () => {
+            const stored = await getThemePreference();
+            if (stored) {
+                setTheme(stored);
+                setStoredTheme(stored);
+            } else {
+                setTheme(colorScheme || 'light');
+            }
+        };
+
+        loadTheme();
         loadTasks();
         loadNotes();
     }, []);
+
+    useEffect(() => {
+        if (storedTheme === null) {
+            setTheme(colorScheme || 'light');
+        }
+    }, [colorScheme, storedTheme]);
 
     useEffect(() => {
         loadTasks();
@@ -194,8 +215,11 @@ function HomeScreenContent() {
         setSelectedNote(note);
     };
 
-    const handleToggleTheme = () => {
-        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    const handleToggleTheme = async () => {
+        const nextTheme = theme === 'light' ? 'dark' : 'light';
+        setTheme(nextTheme);
+        setStoredTheme(nextTheme);
+        await saveThemePreference(nextTheme);
     };
 
     const renderTask = ({ item }) => (
@@ -233,7 +257,7 @@ function HomeScreenContent() {
     };
 
     return (
-        <SafeAreaView style={[styles.container, { paddingTop: insets.top, backgroundColor: themeStyles.backgroundColor }]}> 
+        <SafeAreaView style={[styles.container, { paddingTop: insets.top, backgroundColor: themeStyles.backgroundColor }]}>
             <StatusBar style={isDark ? 'light' : 'dark'} />
             <View style={styles.headerRow}>
                 <Text style={[styles.title, { color: themeStyles.pageText }]}>{activeTitle}</Text>
@@ -242,7 +266,7 @@ function HomeScreenContent() {
                 </Pressable>
             </View>
 
-            <View style={[styles.navRow, { backgroundColor: themeStyles.cardBackground }]}> 
+            <View style={[styles.navRow, { backgroundColor: themeStyles.cardBackground }]}>
                 <Pressable
                     style={[
                         styles.navButton,
@@ -265,7 +289,7 @@ function HomeScreenContent() {
                 </Pressable>
             </View>
 
-            {activePage === 'tasks' && <FilterButtons onFilterChange={handleFilterChange} />}
+            {activePage === 'tasks' && <FilterButtons onFilterChange={handleFilterChange} theme={theme} />}
 
             {activePage === 'tasks' && loading && <ActivityIndicator size="large" color="#007AFF" />}
             {activePage === 'tasks' && error && <Text style={styles.error}>{error}</Text>}
@@ -292,7 +316,7 @@ function HomeScreenContent() {
             )}
 
             {activePage === 'settings' && (
-                <View style={[styles.settingsContainer, { backgroundColor: themeStyles.cardBackground }]}> 
+                <View style={[styles.settingsContainer, { backgroundColor: themeStyles.cardBackground }]}>
                     <Text style={[styles.settingsParagraph, { color: themeStyles.pageText }]}>Dev-Hub Task Manager is an offline-first mobile app for managing tasks and notes on the go. Use this screen to switch the app theme and keep your workflow comfortable at any time.</Text>
                     <Pressable
                         style={[
@@ -317,6 +341,7 @@ function HomeScreenContent() {
                 visible={showTaskForm}
                 onClose={() => setShowTaskForm(false)}
                 onSubmit={handleCreateTask}
+                theme={theme}
             />
 
             <TaskForm
@@ -324,12 +349,14 @@ function HomeScreenContent() {
                 task={editingTask}
                 onClose={() => setEditingTask(null)}
                 onSubmit={(data) => handleUpdateTask(editingTask.id, data)}
+                theme={theme}
             />
 
             <NoteForm
                 visible={showNoteForm}
                 onClose={() => setShowNoteForm(false)}
                 onSubmit={handleCreateNote}
+                theme={theme}
             />
 
             <TaskDetails

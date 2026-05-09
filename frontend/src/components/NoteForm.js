@@ -8,9 +8,11 @@ import {
     View,
 } from 'react-native';
 
-const NoteForm = ({ visible, note, onSubmit, onClose }) => {
+const NoteForm = ({ visible, note, onSubmit, onClose, theme }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const isDark = theme === 'dark';
+    const placeholderColor = isDark ? '#fafafa' : '#777';
 
     useEffect(() => {
         if (note) {
@@ -36,19 +38,21 @@ const NoteForm = ({ visible, note, onSubmit, onClose }) => {
     return (
         <Modal visible={visible} animationType="slide" transparent>
             <View style={styles.overlay}>
-                <View style={styles.container}>
-                    <Text style={styles.title}>{note ? 'Edit Note' : 'New Note'}</Text>
+                <View style={[styles.container, { backgroundColor: isDark ? '#1E1E1E' : '#fff' }]}>
+                    <Text style={[styles.title, { color: isDark ? '#fafafa' : '#333' }]}>{note ? 'Edit Note' : 'New Note'}</Text>
 
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { backgroundColor: isDark ? '#252525' : '#fff', color: isDark ? '#fafafa' : '#000', borderColor: isDark ? '#444' : '#ddd' }]}
                         placeholder="Note title"
+                        placeholderTextColor={placeholderColor}
                         value={title}
                         onChangeText={setTitle}
                     />
 
                     <TextInput
-                        style={[styles.input, styles.textArea]}
+                        style={[styles.input, styles.textArea, { backgroundColor: isDark ? '#252525' : '#fff', color: isDark ? '#fafafa' : '#000', borderColor: isDark ? '#444' : '#ddd' }]}
                         placeholder="Note description"
+                        placeholderTextColor={placeholderColor}
                         value={description}
                         onChangeText={setDescription}
                         multiline

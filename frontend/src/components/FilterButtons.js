@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function FilterButtons({ onFilterChange }) {
+export default function FilterButtons({ onFilterChange, theme = 'light' }) {
     const [activeFilter, setActiveFilter] = useState('all');
+    const isDark = theme === 'dark';
 
     const filters = [
         { key: 'all', label: 'All' },
@@ -24,13 +25,16 @@ export default function FilterButtons({ onFilterChange }) {
                     key={filter.key}
                     style={[
                         styles.button,
+                        isDark && styles.darkButton,
                         activeFilter === filter.key && styles.activeButton,
+                        activeFilter === filter.key && isDark && styles.darkActiveButton,
                     ]}
                     onPress={() => handleFilterPress(filter.key)}
                 >
                     <Text
                         style={[
                             styles.buttonText,
+                            isDark && styles.darkButtonText,
                             activeFilter === filter.key && styles.activeButtonText,
                         ]}
                     >
@@ -58,14 +62,24 @@ const styles = StyleSheet.create({
         borderColor: '#ddd',
         backgroundColor: '#f9f9f9',
     },
+    darkButton: {
+        borderColor: '#333',
+        backgroundColor: '#1A1A1A',
+    },
     activeButton: {
         backgroundColor: '#007AFF',
         borderColor: '#007AFF',
+    },
+    darkActiveButton: {
+        backgroundColor: '#007AFF',
     },
     buttonText: {
         fontSize: 14,
         color: '#666',
         fontWeight: '500',
+    },
+    darkButtonText: {
+        color: '#fafafa',
     },
     activeButtonText: {
         color: '#fff',

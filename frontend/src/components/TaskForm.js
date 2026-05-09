@@ -9,11 +9,14 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const TaskForm = ({ visible, task, onSubmit, onClose }) => {
+const TaskForm = ({ visible, task, onSubmit, onClose, theme }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState('pending');
     const [priority, setPriority] = useState('medium');
+    const isDark = theme === 'dark';
+    const placeholderColor = isDark ? '#fafafa' : '#777';
+    const pickerTextColor = isDark ? '#fafafa' : '#000';
 
     useEffect(() => {
         if (task) {
@@ -45,19 +48,21 @@ const TaskForm = ({ visible, task, onSubmit, onClose }) => {
     return (
         <Modal visible={visible} animationType="slide" transparent>
             <View style={styles.overlay}>
-                <View style={styles.container}>
-                    <Text style={styles.title}>{task ? 'Edit Task' : 'New Task'}</Text>
-                    <Text style={styles.label}>Title:</Text>
+                <View style={[styles.container, { backgroundColor: isDark ? '#1E1E1E' : '#fff' }]}>
+                    <Text style={[styles.title, { color: isDark ? '#fafafa' : '#333' }]}>{task ? 'Edit Task' : 'New Task'}</Text>
+                    <Text style={[styles.label, { color: isDark ? '#fafafa' : '#333' }]}>Title:</Text>
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { backgroundColor: isDark ? '#252525' : '#fff', color: isDark ? '#fafafa' : '#000', borderColor: isDark ? '#444' : '#ddd' }]}
                         placeholder="Task title"
+                        placeholderTextColor={placeholderColor}
                         value={title}
                         onChangeText={setTitle}
                     />
-                    <Text style={styles.label}>Description:</Text>
+                    <Text style={[styles.label, { color: isDark ? '#fafafa' : '#333' }]}>Description:</Text>
                     <TextInput
-                        style={[styles.input, styles.textArea]}
+                        style={[styles.input, styles.textArea, { backgroundColor: isDark ? '#252525' : '#fff', color: isDark ? '#fafafa' : '#000', borderColor: isDark ? '#444' : '#ddd' }]}
                         placeholder="Task description"
+                        placeholderTextColor={placeholderColor}
                         value={description}
                         onChangeText={setDescription}
                         multiline
@@ -65,11 +70,12 @@ const TaskForm = ({ visible, task, onSubmit, onClose }) => {
                     />
 
                     <View style={styles.pickerContainer}>
-                        <Text style={styles.label}>Status:</Text>
+                        <Text style={[styles.label, { color: isDark ? '#fafafa' : '#333' }]}>Status:</Text>
                         <Picker
                             selectedValue={status ? status : 'pending'}
                             onValueChange={setStatus}
-                            style={styles.picker}
+                            style={[styles.picker, { color: pickerTextColor, backgroundColor: isDark ? '#252525' : '#fff' }]}
+                            itemStyle={{ color: pickerTextColor }}
                         >
                             <Picker.Item label="Pending" value="pending" />
                             <Picker.Item label="In Progress" value="in-progress" />
@@ -78,11 +84,12 @@ const TaskForm = ({ visible, task, onSubmit, onClose }) => {
                     </View>
 
                     <View style={styles.pickerContainer}>
-                        <Text style={styles.label}>Priority:</Text>
+                        <Text style={[styles.label, { color: isDark ? '#fafafa' : '#333' }]}>Priority:</Text>
                         <Picker
                             selectedValue={priority ? priority : 'medium'}
                             onValueChange={setPriority}
-                            style={styles.picker}
+                            style={[styles.picker, { color: pickerTextColor, backgroundColor: isDark ? '#252525' : '#fff' }]}
+                            itemStyle={{ color: pickerTextColor }}
                         >
                             <Picker.Item label="Low" value="low" />
                             <Picker.Item label="Medium" value="medium" />
