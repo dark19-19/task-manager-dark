@@ -95,6 +95,24 @@ function HomeScreenContent() {
         }
     };
 
+    const handleStartTask = async (id) => {
+        try {
+            await updateTask(id, { status: 'in-progress' });
+            loadTasks();
+        } catch (err) {
+            Alert.alert('Error', err.message);
+        }
+    };
+
+    const handleCompleteTask = async (id) => {
+        try {
+            await updateTask(id, { status: 'completed' });
+            loadTasks();
+        } catch (err) {
+            Alert.alert('Error', err.message);
+        }
+    };
+
     const handleEditTask = (task) => {
         setEditingTask(task);
     };
@@ -112,7 +130,8 @@ function HomeScreenContent() {
             task={item}
             onDelete={handleDeleteTask}
             onEdit={handleEditTask}
-            onMarkDone={handleMarkDone}
+            onStart={handleStartTask}
+            onComplete={handleCompleteTask}
             onView={handleViewTask}
         />
     );

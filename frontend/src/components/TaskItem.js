@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function TaskItem({ task, onDelete, onEdit, onMarkDone, onView }) {
+export default function TaskItem({ task, onDelete, onEdit, onStart, onComplete, onView }) {
     const getStatusColor = (status) => {
         switch (status) {
             case 'completed':
@@ -41,10 +41,18 @@ export default function TaskItem({ task, onDelete, onEdit, onMarkDone, onView })
                 </View>
             </View>
             <View style={styles.actions}>
-                {task.status !== 'completed' && (
+                {task.status === 'pending' && (
                     <Pressable
-                        style={[styles.actionButton, styles.doneButton]}
-                        onPress={() => onMarkDone(task.id)}
+                        style={[styles.actionButton, styles.startButton]}
+                        onPress={() => onStart(task.id)}
+                    >
+                        <Text style={styles.actionText}>▶</Text>
+                    </Pressable>
+                )}
+                {task.status === 'in-progress' && (
+                    <Pressable
+                        style={[styles.actionButton, styles.completeButton]}
+                        onPress={() => onComplete(task.id)}
                     >
                         <Text style={styles.actionText}>✓</Text>
                     </Pressable>
@@ -118,7 +126,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    doneButton: {
+    startButton: {
+        backgroundColor: '#2196F3',
+    },
+    completeButton: {
         backgroundColor: '#4CAF50',
     },
     editButton: {
