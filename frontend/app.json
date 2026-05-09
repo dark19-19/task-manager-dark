@@ -1,36 +1,41 @@
 {
-    "expo": {
-        "name": "Dev-Hub Task Manager",
-        "slug": "dev-hub-task-manager",
-        "version": "1.0.0",
-        "sdkVersion": "54.0.0",
-        "platforms": [
-            "ios",
-            "android"
-        ],
-        "orientation": "portrait",
-        "primaryColor": "#007AFF",
-        "icon": "./assets/icon.webp",
-        "splash": {
-            "image": "./assets/splash.jpg",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
-        "ios": {
-            "supportsTablet": true,
-            "bundleIdentifier": "com.devhub.taskmanager"
-        },
-        "android": {
-            "package": "com.devhub.taskmanager",
-            "versionCode": 1,
-            "permissions": [],
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.jpg",
-                "backgroundColor": "#ffffff"
-            }
-        }
+  "expo": {
+    "name": "Dev-Hub Task Manager",
+    "slug": "dev-hub-task-manager",
+    "version": "1.0.0",
+    "sdkVersion": "54.0.0",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "orientation": "portrait",
+    "primaryColor": "#007AFF",
+    "icon": "./assets/icon.webp",
+    "splash": {
+      "image": "./assets/splash.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.devhub.taskmanager"
+    },
+    "android": {
+      "package": "com.devhub.taskmanager",
+      "versionCode": 1,
+      "permissions": [],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.jpg",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "63aa5b51-12ad-432b-82f9-96d222ccee50"
+      }
     }
+  }
 }
