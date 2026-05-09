@@ -23,6 +23,7 @@ import NoteDetails from '../components/NoteDetails';
 function HomeScreenContent() {
     const insets = useSafeAreaInsets();
     const [activePage, setActivePage] = useState('tasks');
+    const [theme, setTheme] = useState('light');
     const [loading, setLoading] = useState(true);
     const [tasks, setTasks] = useState([]);
     const [error, setError] = useState(null);
@@ -193,9 +194,14 @@ function HomeScreenContent() {
         setSelectedNote(note);
     };
 
+    const handleToggleTheme = () => {
+        setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    };
+
     const renderTask = ({ item }) => (
         <TaskItem
             task={item}
+            theme={theme}
             onDelete={handleDeleteTask}
             onEdit={handleEditTask}
             onStart={handleStartTask}
@@ -207,28 +213,52 @@ function HomeScreenContent() {
     const renderNote = ({ item }) => (
         <NoteItem
             note={item}
+            theme={theme}
             onDelete={handleDeleteNote}
             onView={handleViewNote}
         />
     );
 
-    const activeTitle = activePage === 'tasks' ? 'Dev-Hub Task Manager' : 'Notes';
+    const isDark = theme === 'dark';
+    const activeTitle = activePage === 'tasks' ? 'Dev-Hub Task Manager' : activePage === 'notes' ? 'Notes' : 'Settings';
     const emptyText = activePage === 'tasks' ? 'No tasks found' : 'No notes found';
+    const themeStyles = {
+        backgroundColor: isDark ? '#121212' : '#F5F7FB',
+        pageText: isDark ? '#F5F5F5' : '#333',
+        subtitleText: isDark ? '#ccc' : '#666',
+        cardBackground: isDark ? '#1E1E1E' : '#fff',
+        navButtonBackground: isDark ? '#1A1A1A' : '#fff',
+        navButtonText: isDark ? '#ccc' : '#666',
+        inputBackground: isDark ? '#252525' : '#fff',
+    };
 
     return (
-        <SafeAreaView style={[styles.container, { paddingTop: insets.top }]}>
-            <StatusBar style="auto" />
-            <Text style={styles.title}>{activeTitle}</Text>
+        <SafeAreaView style={[styles.container, { paddingTop: insets.top, backgroundColor: themeStyles.backgroundColor }]}> 
+            <StatusBar style={isDark ? 'light' : 'dark'} />
+            <View style={styles.headerRow}>
+                <Text style={[styles.title, { color: themeStyles.pageText }]}>{activeTitle}</Text>
+                <Pressable style={styles.settingsTopButton} onPress={() => setActivePage('settings')}>
+                    <Text style={styles.settingsTopButtonText}>Settings</Text>
+                </Pressable>
+            </View>
 
-            <View style={styles.navRow}>
+            <View style={[styles.navRow, { backgroundColor: themeStyles.cardBackground }]}> 
                 <Pressable
-                    style={[styles.navButton, activePage === 'tasks' && styles.navButtonActive]}
+                    style={[
+                        styles.navButton,
+                        { backgroundColor: activePage === 'tasks' ? '#007AFF' : themeStyles.navButtonBackground },
+                        activePage === 'tasks' && styles.navButtonActive,
+                    ]}
                     onPress={() => setActivePage('tasks')}
                 >
                     <Text style={[styles.navButtonText, activePage === 'tasks' && styles.navButtonTextActive]}>Tasks</Text>
                 </Pressable>
                 <Pressable
-                    style={[styles.navButton, activePage === 'notes' && styles.navButtonActive]}
+                    style={[
+                        styles.navButton,
+                        { backgroundColor: activePage === 'notes' ? '#007AFF' : themeStyles.navButtonBackground },
+                        activePage === 'notes' && styles.navButtonActive,
+                    ]}
                     onPress={() => setActivePage('notes')}
                 >
                     <Text style={[styles.navButtonText, activePage === 'notes' && styles.navButtonTextActive]}>Notes</Text>
@@ -257,13 +287,28 @@ function HomeScreenContent() {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={renderNote}
                     contentContainerStyle={[styles.taskList, { paddingBottom: insets.bottom + 80 }]}
-                    ListEmptyComponent={<Text style={styles.empty}>{emptyText}</Text>}
+                    ListEmptyComponent={<Text style={[styles.empty, { color: themeStyles.subtitleText }]}>{emptyText}</Text>}
                 />
+            )}
+
+            {activePage === 'settings' && (
+                <View style={[styles.settingsContainer, { backgroundColor: themeStyles.cardBackground }]}> 
+                    <Text style={[styles.settingsParagraph, { color: themeStyles.pageText }]}>Dev-Hub Task Manager is an offline-first mobile app for managing tasks and notes on the go. Use this screen to switch the app theme and keep your workflow comfortable at any time.</Text>
+                    <Pressable
+                        style={[
+                            styles.settingsActionButton,
+                            { backgroundColor: isDark ? '#4CAF50' : '#007AFF' },
+                        ]}
+                        onPress={handleToggleTheme}
+                    >
+                        <Text style={styles.settingsActionButtonText}>{isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme'}</Text>
+                    </Pressable>
+                </View>
             )}
 
             <Pressable
                 style={[styles.addButton, { bottom: insets.bottom + 24 }]}
-                onPress={() => activePage === 'tasks' ? setShowTaskForm(true) : setShowNoteForm(true)}
+                onPress={() => activePage === 'tasks' ? setShowTaskForm(true) : activePage === 'notes' ? setShowNoteForm(true) : null}
             >
                 <Text style={styles.addButtonText}>+</Text>
             </Pressable>
@@ -359,6 +404,58 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop: 32,
         color: '#666',
+    },
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginHorizontal: 16,
+        marginBottom: 12,
+    },
+    settingsTopButton: {
+        paddingHorizontal: 14,
+        paddingVertical: 8,
+        borderRadius: 24,
+        backgroundColor: '#007AFF',
+    },
+    settingsTopButtonText: {
+        color: '#fff',
+        fontWeight: '600',
+    },
+    navRow: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginHorizontal: 16,
+        gap: 12,
+        marginBottom: 16,
+        borderRadius: 24,
+        padding: 4,
+    },
+    settingsContainer: {
+        marginHorizontal: 16,
+        padding: 20,
+        borderRadius: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
+    },
+    settingsParagraph: {
+        fontSize: 16,
+        lineHeight: 24,
+        marginBottom: 20,
+        color: '#333',
+    },
+    settingsActionButton: {
+        paddingVertical: 14,
+        borderRadius: 12,
+        alignItems: 'center',
+    },
+    settingsActionButtonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
     },
     addButton: {
         position: 'absolute',

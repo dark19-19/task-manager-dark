@@ -1,15 +1,21 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function NoteItem({ note, onDelete, onView }) {
+export default function NoteItem({ note, theme, onDelete, onView }) {
+    const isDark = theme === 'dark';
+    const cardBackground = isDark ? '#1E1E1E' : '#ffffff';
+    const titleColor = isDark ? '#F5F5F5' : '#333';
+    const descriptionColor = isDark ? '#ccc' : '#666';
+    const updatedColor = isDark ? '#aaa' : '#999';
+
     return (
-        <Pressable style={styles.container} onPress={() => onView(note)}>
+        <Pressable style={[styles.container, { backgroundColor: cardBackground }]} onPress={() => onView(note)}>
             <View style={styles.content}>
-                <Text style={styles.title}>{note.title}</Text>
-                <Text style={styles.description} numberOfLines={2}>
+                <Text style={[styles.title, { color: titleColor }]}>{note.title}</Text>
+                <Text style={[styles.description, { color: descriptionColor }]} numberOfLines={2}>
                     {note.description || 'No description'}
                 </Text>
-                <Text style={styles.updatedAt}>
+                <Text style={[styles.updatedAt, { color: updatedColor }]}> 
                     Updated {new Date(note.updated_at).toLocaleString()}
                 </Text>
             </View>

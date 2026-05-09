@@ -1,7 +1,13 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-export default function TaskItem({ task, onDelete, onEdit, onStart, onComplete, onView }) {
+export default function TaskItem({ task, theme, onDelete, onEdit, onStart, onComplete, onView }) {
+    const isDark = theme === 'dark';
+    const cardBackground = isDark ? '#1E1E1E' : '#ffffff';
+    const titleColor = isDark ? '#F5F5F5' : '#333';
+    const descriptionColor = isDark ? '#ccc' : '#666';
+    const metadataColor = isDark ? '#ddd' : '#333';
+
     const getStatusColor = (status) => {
         switch (status) {
             case 'completed':
@@ -25,10 +31,10 @@ export default function TaskItem({ task, onDelete, onEdit, onStart, onComplete, 
     };
 
     return (
-        <Pressable style={styles.container} onPress={() => onView(task)}>
+        <Pressable style={[styles.container, { backgroundColor: cardBackground }]} onPress={() => onView(task)}>
             <View style={styles.content}>
-                <Text style={styles.title}>{task.title}</Text>
-                <Text style={styles.description} numberOfLines={2}>
+                <Text style={[styles.title, { color: titleColor }]}>{task.title}</Text>
+                <Text style={[styles.description, { color: descriptionColor }]} numberOfLines={2}>
                     {task.description || 'No description'}
                 </Text>
                 <View style={styles.meta}>
