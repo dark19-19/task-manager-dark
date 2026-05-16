@@ -60,8 +60,8 @@ const NoteForm = ({ visible, note, onSubmit, onClose, theme }) => {
                     />
 
                     <View style={styles.buttonContainer}>
-                        <Pressable style={[styles.button, styles.cancelButton]} onPress={onClose}>
-                            <Text style={styles.cancelButtonText}>Cancel</Text>
+                        <Pressable style={[styles.button, {backgroundColor: isDark ? '#252525' : '#f5f5f5'}]} onPress={onClose}>
+                            <Text style={{color: isDark ? '#fafafa' : '#666'}}>Cancel</Text>
                         </Pressable>
                         <Pressable style={[styles.button, styles.submitButton]} onPress={handleSubmit}>
                             <Text style={styles.submitButtonText}>{note ? 'Save' : 'Create'}</Text>
@@ -116,11 +116,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
     },
-    cancelButton: {
-        backgroundColor: '#f5f5f5',
-    },
     cancelButtonText: {
-        color: '#666',
         fontSize: 16,
         fontWeight: '500',
     },
