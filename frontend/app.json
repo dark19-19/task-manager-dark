@@ -10,7 +10,7 @@
     ],
     "orientation": "portrait",
     "primaryColor": "#007AFF",
-    "icon": "./assets/icon.webp",
+    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.jpg",
       "resizeMode": "contain",
@@ -28,7 +28,7 @@
       "versionCode": 1,
       "permissions": [],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.jpg",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
     },
